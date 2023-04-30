@@ -194,16 +194,4 @@ obtenerNombreSustancia (Elemento nombre _ _ _) = nombre
 obtenerSustanciaDeComponente :: Componente -> Sustancia
 obtenerSustanciaDeComponente (Componente sustancia cantidadDeLaSustancia) = sustancia
 
-componentesSustanciaCompuesta :: Sustancia -> [Componente]
-componentesSustanciaCompuesta (Compuesto nombre lista grupo) = lista
 
-
-primerComponenteSustanciaCompuesta :: Sustancia -> Componente
-primerComponenteSustanciaCompuesta = (head . componentesSustanciaCompuesta)
-
-{-obtenerUltimoComponente :: [Componente] -> Componente
-obtenerUltimoComponente componentes | null (tail componentes) = head componentes
-                                                            | otherwise = (obtenerUltimoComponente . tail) componentes-}
-
-ultimoComponenteSustanciaCompuesta :: Sustancia -> Componente
-ultimoComponenteSustanciaCompuesta = (last . componentesSustanciaCompuesta) 
