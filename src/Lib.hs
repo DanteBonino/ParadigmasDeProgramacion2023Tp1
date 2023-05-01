@@ -134,7 +134,7 @@ obtenerSustanciaDeUnComponente (Componente sustancia cantidadDeLaSustancia) = su
 
 --Descartadas:
 
-obtenerNombreDeUnionDeUnaSustancia :: Sustancia -> String --Esta función no se la utiliza, pero, en un primer momento, se la creó pensando en restringir el uso de formarNombreDeUnionDeUnNombre a datos de tipo  Sustancia. Esto fue descartado.
+obtenerNombreDeUnionDeUnaSustancia :: Sustancia -> String --Esto fue descartado y no fue utilizado
 obtenerNombreDeUnionDeUnaSustancia (Elemento nombre _ _ _) = formarNombreDeUnionDeUnNombre nombre
 obtenerNombreDeUnionDeUnaSustancia (Compuesto nombre _ _) = formarNombreDeUnionDeUnNombre nombre
 
