@@ -39,36 +39,7 @@ oxigeno = Elemento "Oxígeno" "O" 8 NoMetal
 agua :: Sustancia
 agua = Compuesto "agua"  [Componente hidrogeno 2, Componente oxigeno 1] NoMetal --Ésta es más declarativa
 
-dobleAgua = Compuesto "dobleAgua" [Componente agua 2] NoMetal
-
 --2)
-
---Elementos y Compuestos Metálicos
-
-calcio :: Sustancia
-calcio = Elemento "Calcio" "Ca" 20 Metal
-
-potasio :: Sustancia
-potasio = Elemento "Potasio" "K" 19 Metal
-
-compuestoMetalico :: Sustancia
-compuestoMetalico = Compuesto "CompuestoMetalico" [Componente calcio 1, Componente potasio 1] Metal
-
---Elementos y Compuestos Gas Noble
-
-helio :: Sustancia
-helio = Elemento "Helio" "He" 2 GasNoble
-
-compuestoGasNoble :: Sustancia
-compuestoGasNoble = Compuesto "CompuestoGasNoble" [Componente helio 3] GasNoble
-
---Elementos y Compuestos Halógenos
-
-fluor :: Sustancia
-fluor = Elemento "Fluor" "F" 9 Halógeno
-
-compuestoHalogeno :: Sustancia
-compuestoHalogeno = Compuesto "CompuestoHalogeno" [Componente fluor 3] Halógeno
 
 --Función De Conducción Bien o Mal Según un Criterio
 
@@ -78,7 +49,6 @@ conduceBien (Compuesto _ _ Halógeno) "calor" = True
 conduceBien (Elemento _ _ _ GasNoble) "electricidad" = True
 conduceBien (Elemento _ _ _ Metal) _ = True
 conduceBien _ _ = False
-
 
 --3)
 
@@ -147,4 +117,34 @@ obtenerNombreSustancia (Elemento nombre _ _ _) = nombre
 obtenerSustanciaDeComponente :: Componente -> Sustancia
 obtenerSustanciaDeComponente (Componente sustancia cantidadDeLaSustancia) = sustancia
 
+--Lo que viene a continuación fue creado con el único fin de probar el funcionamiento del código, no tiene como objetivo responder ninguna consigna:
+
+dobleAgua = Compuesto "dobleAgua" [Componente agua 2] NoMetal
+
+--Elementos y Compuestos Metálicos
+
+calcio :: Sustancia
+calcio = Elemento "Calcio" "Ca" 20 Metal
+
+potasio :: Sustancia
+potasio = Elemento "Potasio" "K" 19 Metal
+
+compuestoMetalico :: Sustancia
+compuestoMetalico = Compuesto "CompuestoMetalico" [Componente calcio 1, Componente potasio 1] Metal
+
+--Elementos y Compuestos Gas Noble
+
+helio :: Sustancia
+helio = Elemento "Helio" "He" 2 GasNoble
+
+compuestoGasNoble :: Sustancia
+compuestoGasNoble = Compuesto "CompuestoGasNoble" [Componente helio 3] GasNoble
+
+--Elementos y Compuestos Halógenos
+
+fluor :: Sustancia
+fluor = Elemento "Fluor" "F" 9 Halógeno
+
+compuestoHalogeno :: Sustancia
+compuestoHalogeno = Compuesto "CompuestoHalogeno" [Componente fluor 3] Halógeno
 
