@@ -99,15 +99,15 @@ formarNombreDeLaMezclaDeComponentes nombresDeLosComponentes | length nombresDeLo
 --6)
 
 concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto :: [Componente] -> String
-concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto = ((++)"(" . flip (++)")". concat . (map construirFormulaDeComponenteDeUnaSustanciaCompuesta)) -- Poca expresividad (Por eso no se la usa)
+concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto = ((++)"(" . flip (++)")". concat . (map construirFormulaDeUnComponenteDeUnaSustanciaCompuesta)) -- Poca expresividad (Por eso no se la usa)
 
-construirFormulaDeComponenteDeUnaSustanciaCompuesta :: Componente -> String
-construirFormulaDeComponenteDeUnaSustanciaCompuesta (Componente sustancia 1) = formulaDeUnaSustancia sustancia
-construirFormulaDeComponenteDeUnaSustanciaCompuesta (Componente sustancia cantidadDeLaSustancia) = formulaDeUnaSustancia sustancia ++ show cantidadDeLaSustancia
+construirFormulaDeUnComponenteDeUnaSustanciaCompuesta :: Componente -> String
+construirFormulaDeUnComponenteDeUnaSustanciaCompuesta (Componente sustancia 1) = formulaDeUnaSustancia sustancia
+construirFormulaDeUnComponenteDeUnaSustanciaCompuesta (Componente sustancia cantidadDeLaSustancia) = formulaDeUnaSustancia sustancia ++ show cantidadDeLaSustancia
 
 formulaDeUnaSustancia :: Sustancia -> String
 formulaDeUnaSustancia (Elemento _ simboloQuimico _ _) = simboloQuimico
-formulaDeUnaSustancia (Compuesto _ componentes _) = "(" ++ concatMap construirFormulaDeComponenteDeUnaSustanciaCompuesta componentes ++ ")"  --No necesitas agregar un show acá pq la otra función ya convierte todos los ints
+formulaDeUnaSustancia (Compuesto _ componentes _) = "(" ++ concatMap construirFormulaDeUnComponenteDeUnaSustanciaCompuesta componentes ++ ")"  --No necesitas agregar un show acá pq la otra función ya convierte todos los ints
 
 --Extras
 -- Las funciones extras son funciones que se crearon sin pensar en un problema en particular, pero que se consideraron que podían ser útiles. Igualmente, terminaron siendo utilizadas en el punto 5.
