@@ -56,7 +56,7 @@ vocales :: [Char]
 vocales = ['a', 'e', 'i', 'o', 'u']
 
 esVocal :: Char -> Bool
-esVocal unaLetra = elem unaLetra vocales --elem te dice si un elemento está en una lista
+esVocal unaLetra = elem unaLetra vocales 
 
 {- Antigua version de esVocal 
     esVocal :: Char -> Bool
