@@ -25,10 +25,10 @@ data Componente = Componente Sustancia Int deriving Show
 --1)
 
 hidrogeno :: Sustancia
-hidrogeno = Elemento "Hidrógeno" "H" 1 NoMetal
+hidrogeno = Elemento "Hidrogeno" "H" 1 NoMetal
 
 oxigeno :: Sustancia
-oxigeno = Elemento "Oxígeno" "O" 8 NoMetal
+oxigeno = Elemento "Oxigeno" "O" 8 NoMetal
 
 {-
     agua :: Sustancia
@@ -67,10 +67,12 @@ esVocal unaLetra = elem unaLetra vocales --elem te dice si un elemento está en 
     esVocal 'u' = True
     esVocal _ = False
 -}
+obtenerUltimaLetraDeUnNombre :: String -> Char
+obtenerUltimaLetraDeUnNombre = last
 
 formarNombreDeUnionDeUnNombre :: String -> String
-formarNombreDeUnionDeUnNombre nombre  | (not . esVocal . last) nombre = nombre ++ "uro"
-                                        | otherwise = (formarNombreDeUnionDeUnNombre . take ((length nombre) - 1)) nombre 
+formarNombreDeUnionDeUnNombre nombre  | (not . esVocal . obtenerUltimaLetraDeUnNombre) nombre = nombre ++ "uro"
+                                      | otherwise = (formarNombreDeUnionDeUnNombre . take ((length nombre) - 1)) nombre 
 
 obtenerNombreDeUnionDeUnElementoOCompuesto :: Sustancia -> String
 obtenerNombreDeUnionDeUnElementoOCompuesto (Elemento nombre _ _ _) = formarNombreDeUnionDeUnNombre nombre
@@ -88,11 +90,11 @@ combinarNombreDeUnionConOtroNombre nombreDelPrimerElemento nombreDelSegundoEleme
 --5)
 
 mezclarComponentes :: [Componente] -> Sustancia
-mezclarComponentes componentes = Compuesto ((formarNombreDeLaMezclaDeComponente . map (obtenerNombreSustancia . obtenerSustanciaDeComponente)) componentes) componentes NoMetal
+mezclarComponentes componentes = Compuesto ((formarNombreDeLaMezclaDeComponentes . map (obtenerNombreDeUnaSustancia . obtenerSustanciaDeUnComponente)) componentes) componentes NoMetal
 
-formarNombreDeLaMezclaDeComponente :: [String] -> String
-formarNombreDeLaMezclaDeComponente componentes | length componentes == 1 = head componentes
-                                               | otherwise = combinarNombreDeUnionConOtroNombre (head componentes) (formarNombreDeLaMezclaDeComponente(tail componentes))
+formarNombreDeLaMezclaDeComponentes :: [String] -> String
+formarNombreDeLaMezclaDeComponentes nombresDeLosComponentes | length nombresDeLosComponentes == 1 = head nombresDeLosComponentes
+                                                            | otherwise = combinarNombreDeUnionConOtroNombre (head nombresDeLosComponentes) (formarNombreDeLaMezclaDeComponentes(tail nombresDeLosComponentes))
 
 --6)
 
@@ -108,14 +110,14 @@ formulaDeUnaSustancia (Elemento _ simboloQuimico _ _) = simboloQuimico
 formulaDeUnaSustancia (Compuesto _ componentes _) = "(" ++ concatMap construirFormulaDeComponenteDeUnaSustanciaCompuesta componentes ++ ")"  --No necesitas agregar un show acá pq la otra función ya convierte todos los ints
 
 --Extras
--- Las funciones extras son funciones que se crearon sin pensar en un problema en particular, pero que se consideraron que podían ser útiles. Estas sólo fueron utilizadas para resolver el punto 5)
+-- Las funciones extras son funciones que se crearon sin pensar en un problema en particular, pero que se consideraron que podían ser útiles. Igualmente, terminaron siendo utilizadas en el punto 5.
 
-obtenerNombreSustancia :: Sustancia -> String
-obtenerNombreSustancia (Compuesto nombre lista grupo) = nombre
-obtenerNombreSustancia (Elemento nombre _ _ _) = nombre
+obtenerNombreDeUnaSustancia :: Sustancia -> String
+obtenerNombreDeUnaSustancia (Compuesto nombre lista grupo) = nombre
+obtenerNombreDeUnaSustancia (Elemento nombre _ _ _) = nombre
 
-obtenerSustanciaDeComponente :: Componente -> Sustancia
-obtenerSustanciaDeComponente (Componente sustancia cantidadDeLaSustancia) = sustancia
+obtenerSustanciaDeUnComponente :: Componente -> Sustancia
+obtenerSustanciaDeUnComponente (Componente sustancia cantidadDeLaSustancia) = sustancia
 
 --Lo que viene a continuación fue creado con el único fin de probar el funcionamiento del código, no tiene como objetivo responder ninguna consigna:
 
