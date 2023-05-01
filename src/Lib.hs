@@ -75,11 +75,12 @@ formarNombreDeUnionDeUnNombre :: String -> String
 formarNombreDeUnionDeUnNombre nombre  | noTerminaEnVocal nombre = nombre ++ "uro"
                                       | otherwise = (formarNombreDeUnionDeUnNombre . take ((length nombre) - 1)) nombre 
 
-obtenerNombreDeUnionDeUnElementoOCompuesto :: Sustancia -> String
-obtenerNombreDeUnionDeUnElementoOCompuesto (Elemento nombre _ _ _) = formarNombreDeUnionDeUnNombre nombre
-obtenerNombreDeUnionDeUnElementoOCompuesto (Compuesto nombre _ _) = formarNombreDeUnionDeUnNombre nombre
+obtenerNombreDeUnionDeUnaSustancia :: Sustancia -> String --Esta función no se la utiliza, pero, en un primer momento, se la creó pensando en restringir el uso de formarNombreDeUnionDeUnNombre a datos de tipo  Sustancia. Esto fue descartado.
+obtenerNombreDeUnionDeUnaSustancia (Elemento nombre _ _ _) = formarNombreDeUnionDeUnNombre nombre
+obtenerNombreDeUnionDeUnaSustancia (Compuesto nombre _ _) = formarNombreDeUnionDeUnNombre nombre
 
 --4)
+
 {- Esta fue una de las posibles versiones que se pensó para la función que terminó siendo combinarNombreDeUnionConOtroNombre. Además de que era menos declarativa, también estaba pensada para ser aplicada sólo para datos de tipo Sustancia.
     combinarUnNombreDeUnionConUnNombre :: Sustancia -> Sustancia -> String
     combinarUnNombreDeUnionConUnNombre (Elemento nombreDelPrimerElemento _ _ _) (Elemento nombreDelSegundoElemento _ _ _) = (flip (++) (" de " ++ nombreDelSegundoElemento) . formarNombreDeUnionDeUnElemento) nombreDelPrimerElemento
@@ -90,8 +91,23 @@ combinarNombreDeUnionConOtroNombre primerNombre segundoNombre = (formarNombreDeU
 
 --5)
 
+formarListaConLosNombresDeLasSustanciasDeUnaSerieDeComponentes :: [Componente] -> [String]
+formarListaConLosNombresDeLasSustanciasDeUnaSerieDeComponentes = map (obtenerNombreDeUnaSustancia . obtenerSustanciaDeUnComponente)
+
+nombreDeLaMezclaDeComponentes :: [Componente] -> String
+nombreDeLaMezclaDeComponentes = (formarNombreDeLaMezclaDeComponentes . formarListaConLosNombresDeLasSustanciasDeUnaSerieDeComponentes)
+
 mezclarComponentes :: [Componente] -> Sustancia
-mezclarComponentes componentes = Compuesto ((formarNombreDeLaMezclaDeComponentes . map (obtenerNombreDeUnaSustancia . obtenerSustanciaDeUnComponente)) componentes) componentes NoMetal
+mezclarComponentes componentes = Compuesto (nombreDeLaMezclaDeComponentes componentes) componentes NoMetal
+
+{-
+    La función mezclarComponentes antes era así:
+    mezclarComponentes componentes = Compuesto ((formarNombreDeLaMezclaDeComponentes . map (obtenerNombreDeUnaSustancia . obtenerSustanciaDeUnComponente)) componentes) componentes NoMetal
+    Se la modificó por razones de declartividad. Se considera que, en primer lugar, el map (obtenerNombreDeUnaSustancia . obtenerSustanciaDeUnComponente) si bien, conociendo qué hace la función map y las otras dos,
+    es claro qué hace o cómo funciona esa función aplicada parcialmente con dicha composición, para un lector que no realizó el trabajo puede ser dificil de comprender en una primera lectura. Por eso, se creó la función
+    formarListaDeLosNombresDeLasSustanciasDeUnaSerieDeComponentes. En segundo lugar, se creó nombreDeLaMezclaDeComponentes que, para cualquiera que lea su nombre, sugiere que básicamente se va a generar el nombreDeLaMezcla
+    que básicamente es equivalente a la composición de formarNombreDeLaMezclaDeComponente con formarListaConLosNombresDeLasSustanciasDeUnaSerieDeComponentes.
+-}
 
 formarNombreDeLaMezclaDeComponentes :: [String] -> String
 formarNombreDeLaMezclaDeComponentes nombresDeLosComponentes | length nombresDeLosComponentes == 1 = head nombresDeLosComponentes
@@ -100,7 +116,7 @@ formarNombreDeLaMezclaDeComponentes nombresDeLosComponentes | length nombresDeLo
 --6)
 
 concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto :: [Componente] -> String
-concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto = ((++)"(" . flip (++)")". concat . (map construirFormulaDeUnComponenteDeUnaSustanciaCompuesta)) -- Poca expresividad (Por eso no se la usa)
+concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto = ((++)"(" . flip (++)")". concat . (map construirFormulaDeUnComponenteDeUnaSustanciaCompuesta)) --Poca expresividad -> No se la utiliza, simplemente queda a modo de documentación
 
 construirFormulaDeUnComponenteDeUnaSustanciaCompuesta :: Componente -> String
 construirFormulaDeUnComponenteDeUnaSustanciaCompuesta (Componente sustancia 1) = formulaDeUnaSustancia sustancia
@@ -111,7 +127,7 @@ formulaDeUnaSustancia (Elemento _ simboloQuimico _ _) = simboloQuimico
 formulaDeUnaSustancia (Compuesto _ componentes _) = "(" ++ concatMap construirFormulaDeUnComponenteDeUnaSustanciaCompuesta componentes ++ ")"  --No necesitas agregar un show acá pq la otra función ya convierte todos los ints
 
 --Extras
--- Las funciones extras son funciones que se crearon sin pensar en un problema en particular, pero que se consideraron que podían ser útiles. Igualmente, terminaron siendo utilizadas en el punto 5.
+--Las funciones extras son funciones que se crearon sin pensar en un problema en particular, pero que se consideraron que podían ser útiles. Igualmente, terminaron siendo utilizadas en el punto 5.
 
 obtenerNombreDeUnaSustancia :: Sustancia -> String
 obtenerNombreDeUnaSustancia (Compuesto nombre lista grupo) = nombre
