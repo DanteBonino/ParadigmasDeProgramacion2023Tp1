@@ -67,11 +67,12 @@ esVocal unaLetra = elem unaLetra vocales --elem te dice si un elemento está en 
     esVocal 'u' = True
     esVocal _ = False
 -}
-obtenerUltimaLetraDeUnNombre :: String -> Char
-obtenerUltimaLetraDeUnNombre = last
+
+noTerminaEnVocal :: String -> Bool
+noTerminaEnVocal = (not . esVocal . last)
 
 formarNombreDeUnionDeUnNombre :: String -> String
-formarNombreDeUnionDeUnNombre nombre  | (not . esVocal . obtenerUltimaLetraDeUnNombre) nombre = nombre ++ "uro"
+formarNombreDeUnionDeUnNombre nombre  | noTerminaEnVocal nombre = nombre ++ "uro"
                                       | otherwise = (formarNombreDeUnionDeUnNombre . take ((length nombre) - 1)) nombre 
 
 obtenerNombreDeUnionDeUnElementoOCompuesto :: Sustancia -> String
@@ -85,7 +86,7 @@ obtenerNombreDeUnionDeUnElementoOCompuesto (Compuesto nombre _ _) = formarNombre
 -}
 
 combinarNombreDeUnionConOtroNombre :: String -> String -> String
-combinarNombreDeUnionConOtroNombre nombreDelPrimerElemento nombreDelSegundoElemento = (formarNombreDeUnionDeUnNombre nombreDelPrimerElemento) ++ " de " ++ nombreDelSegundoElemento
+combinarNombreDeUnionConOtroNombre primerNombre segundoNombre = (formarNombreDeUnionDeUnNombre primerNombre) ++ " de " ++ segundoNombre --Se denominó primerNombre y segundoNombre ya que utilizar nombreDelPrimerElemento y nombreDelSegundoElemento, teniendo en cuenta que Elemento en el contexto de este trabajo se utiliza para denominar a algo específicamente, se puede prestar a confusión.
 
 --5)
 
