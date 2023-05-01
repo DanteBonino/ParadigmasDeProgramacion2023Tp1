@@ -75,10 +75,6 @@ formarNombreDeUnionDeUnNombre :: String -> String
 formarNombreDeUnionDeUnNombre nombre  | noTerminaEnVocal nombre = nombre ++ "uro"
                                       | otherwise = (formarNombreDeUnionDeUnNombre . take ((length nombre) - 1)) nombre 
 
-obtenerNombreDeUnionDeUnaSustancia :: Sustancia -> String --Esta función no se la utiliza, pero, en un primer momento, se la creó pensando en restringir el uso de formarNombreDeUnionDeUnNombre a datos de tipo  Sustancia. Esto fue descartado.
-obtenerNombreDeUnionDeUnaSustancia (Elemento nombre _ _ _) = formarNombreDeUnionDeUnNombre nombre
-obtenerNombreDeUnionDeUnaSustancia (Compuesto nombre _ _) = formarNombreDeUnionDeUnNombre nombre
-
 --4)
 
 {- Esta fue una de las posibles versiones que se pensó para la función que terminó siendo combinarNombreDeUnionConOtroNombre. Además de que era menos declarativa, también estaba pensada para ser aplicada sólo para datos de tipo Sustancia.
@@ -93,6 +89,10 @@ combinarNombreDeUnionConOtroNombre primerNombre segundoNombre = (formarNombreDeU
 
 formarListaConLosNombresDeLasSustanciasDeUnaSerieDeComponentes :: [Componente] -> [String]
 formarListaConLosNombresDeLasSustanciasDeUnaSerieDeComponentes = map (obtenerNombreDeUnaSustancia . obtenerSustanciaDeUnComponente)
+
+formarNombreDeLaMezclaDeComponentes :: [String] -> String
+formarNombreDeLaMezclaDeComponentes nombresDeLosComponentes | length nombresDeLosComponentes == 1 = head nombresDeLosComponentes
+                                                            | otherwise = combinarNombreDeUnionConOtroNombre (head nombresDeLosComponentes) (formarNombreDeLaMezclaDeComponentes(tail nombresDeLosComponentes))
 
 nombreDeLaMezclaDeComponentes :: [Componente] -> String
 nombreDeLaMezclaDeComponentes = (formarNombreDeLaMezclaDeComponentes . formarListaConLosNombresDeLasSustanciasDeUnaSerieDeComponentes)
@@ -109,10 +109,6 @@ mezclarComponentes componentes = Compuesto (nombreDeLaMezclaDeComponentes compon
     que básicamente es equivalente a la composición de formarNombreDeLaMezclaDeComponente con formarListaConLosNombresDeLasSustanciasDeUnaSerieDeComponentes.
 -}
 
-formarNombreDeLaMezclaDeComponentes :: [String] -> String
-formarNombreDeLaMezclaDeComponentes nombresDeLosComponentes | length nombresDeLosComponentes == 1 = head nombresDeLosComponentes
-                                                            | otherwise = combinarNombreDeUnionConOtroNombre (head nombresDeLosComponentes) (formarNombreDeLaMezclaDeComponentes(tail nombresDeLosComponentes))
-
 --6)
 
 concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto :: [Componente] -> String
@@ -126,8 +122,8 @@ formulaDeUnaSustancia :: Sustancia -> String
 formulaDeUnaSustancia (Elemento _ simboloQuimico _ _) = simboloQuimico
 formulaDeUnaSustancia (Compuesto _ componentes _) = "(" ++ concatMap construirFormulaDeUnComponenteDeUnaSustanciaCompuesta componentes ++ ")"  --No necesitas agregar un show acá pq la otra función ya convierte todos los ints
 
---Extras
---Las funciones extras son funciones que se crearon sin pensar en un problema en particular, pero que se consideraron que podían ser útiles. Igualmente, terminaron siendo utilizadas en el punto 5.
+--Extras:
+--Las funciones a continuación son funciones que se crearon sin pensar en un problema en particular, pero que se consideraron que podían ser útiles. Igualmente, terminaron siendo utilizadas en el punto 5.
 
 obtenerNombreDeUnaSustancia :: Sustancia -> String
 obtenerNombreDeUnaSustancia (Compuesto nombre lista grupo) = nombre
@@ -135,6 +131,12 @@ obtenerNombreDeUnaSustancia (Elemento nombre _ _ _) = nombre
 
 obtenerSustanciaDeUnComponente :: Componente -> Sustancia
 obtenerSustanciaDeUnComponente (Componente sustancia cantidadDeLaSustancia) = sustancia
+
+--Descartadas:
+
+obtenerNombreDeUnionDeUnaSustancia :: Sustancia -> String --Esta función no se la utiliza, pero, en un primer momento, se la creó pensando en restringir el uso de formarNombreDeUnionDeUnNombre a datos de tipo  Sustancia. Esto fue descartado.
+obtenerNombreDeUnionDeUnaSustancia (Elemento nombre _ _ _) = formarNombreDeUnionDeUnNombre nombre
+obtenerNombreDeUnionDeUnaSustancia (Compuesto nombre _ _) = formarNombreDeUnionDeUnNombre nombre
 
 --Lo que viene a continuación fue creado con el único fin de probar el funcionamiento del código, no tiene como objetivo responder ninguna consigna:
 
