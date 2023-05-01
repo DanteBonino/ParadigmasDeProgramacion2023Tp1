@@ -2,7 +2,7 @@ import Text.Show.Functions
 import Data.List
 import Data.Tuple
 
---Tp
+--Enunciado Tp
 {- 
 ¡Excelsior! ¡Encontramos la manera de convertir la tierra en oro mágicamente! O eso creían los alquimistas, aunque en realidad no era magia, si no que era ciencia, química para ser exactos.
 Hoy en día, las sustancias químicas abundan, y prácticamente todos los días se están descubriendo sustancias nuevas.
@@ -16,65 +16,14 @@ También poseen un símbolo o fórmula química, la cual no nos interesa conocer
 Ah, nos olvidábamos, también sabemos que todas las sustancias poseen un grupo o especie, que puede ser metal, no metal, halógeno o gas noble.
 -}
 
---SustanciasSencillas || Elementos:
---Tupla de 4 -> Pq tiene elementos de distinto tipo
-{-
-        nombre : "String",
-        símboloQuímico : "String",
-        númeroAtómico : "Int" [1...103 U 121],
-        especie: noMetal|metal|halógeno|gasNoble (String)
--}
---Tupla de n elementos + 2 
---SustanciasCompuestas || Compuestos:
-{-
-        Sustancia: Compuesto || Elemento,
-        cantdidadDeMoleculas: Int,
-        nombre : String,
--}
-
-{-data Elemento = Elemento {
-    nombre :: String,
-    simbolo :: String,
-    nAtomico :: Int
-} deriving (Show)-}
-
-{-
-        data Elemento = Elemento {
-    nombre :: String,
-    simbolo :: [Char, Char],
-    nAtomico :: Int
-} deriving (Show)
-
-data Componente = Componente {
-    sustancia :: Compuesto | Elemento,
-    cantMoleculas :: Int
-} deriving (Show) where 
-
-data Compuesto = Compuesto {
-    nombre :: String,
-    componente :: [Componente],
-    grupo :: String
-} deriving (Show)
--}
-
-
-
-{-
-data Sustancia = Elemento String String Int  | Compuesto String [Componente] String deriving Show --Sólo existe el type Sustancia, pero tiene 2 constructores -> Elemento (crea una tupla de 3 valores) y Compuesto (crea una tupla de 3 valores)
-
-data Componente = Componente Sustancia Int deriving Show
--}
-
-
 data Grupo = Metal | NoMetal | Halógeno | GasNoble deriving (Show, Eq)
 
 data Sustancia = Elemento String String Int Grupo | Compuesto String [Componente] Grupo   deriving Show
 
 data Componente = Componente Sustancia Int deriving Show
 
-
-
 --1)
+
 hidrogeno :: Sustancia
 hidrogeno = Elemento "Hidrógeno" "H" 1 NoMetal
 
@@ -84,7 +33,9 @@ oxigeno = Elemento "Oxígeno" "O" 8 NoMetal
 {-
     agua :: Sustancia
     agua = Compuesto "Agua" (map (\(nombre, cantidad) -> Componente nombre cantidad) [(hidrogeno, 2), (oxigeno, 1)]) "no metal"
--} 
+    Esta forma de definir compuestos usando map con una lambda expression fue descartada por que se consideró que agregaba complejidad algoritimica y se perdía declaratividad
+-}
+
 agua :: Sustancia
 agua = Compuesto "agua"  [Componente hidrogeno 2, Componente oxigeno 1] NoMetal --Ésta es más declarativa
 
@@ -136,7 +87,8 @@ vocales = ['a', 'e', 'i', 'o', 'u']
 
 esVocal :: Char -> Bool
 esVocal unaLetra = elem unaLetra vocales --elem te dice si un elemento está en una lista
-{- Version de esVocal vieja
+
+{- Antigua version de esVocal 
     esVocal :: Char -> Bool
     esVocal 'a' = True
     esVocal 'e' = True
@@ -155,8 +107,10 @@ obtenerNombreDeUnionDeUnElementoOCompuesto (Elemento nombre _ _ _) = formarNombr
 obtenerNombreDeUnionDeUnElementoOCompuesto (Compuesto nombre _ _) = formarNombreDeUnionDeUnNombre nombre
 
 --4)
-{-combinarUnNombreDeUnionConUnNombre :: Sustancia -> Sustancia -> String
-combinarUnNombreDeUnionConUnNombre (Elemento nombreDelPrimerElemento _ _ _) (Elemento nombreDelSegundoElemento _ _ _) = (flip (++) (" de " ++ nombreDelSegundoElemento) . formarNombreDeUnionDeUnElemento) nombreDelPrimerElemento -}
+{- Esta fue una de las posibles versiones que se pensó para la función que terminó siendo combinarNombreDeUnionConOtroNombre. Además de que era menos declarativa, también estaba pensada para ser aplicada sólo para datos de tipo Sustancia.
+    combinarUnNombreDeUnionConUnNombre :: Sustancia -> Sustancia -> String
+    combinarUnNombreDeUnionConUnNombre (Elemento nombreDelPrimerElemento _ _ _) (Elemento nombreDelSegundoElemento _ _ _) = (flip (++) (" de " ++ nombreDelSegundoElemento) . formarNombreDeUnionDeUnElemento) nombreDelPrimerElemento
+-}
 
 combinarNombreDeUnionConOtroNombre :: String -> String -> String
 combinarNombreDeUnionConOtroNombre nombreDelPrimerElemento nombreDelSegundoElemento = (formarNombreDeUnionDeUnNombre nombreDelPrimerElemento) ++ " de " ++ nombreDelSegundoElemento
@@ -184,6 +138,7 @@ formulaDeUnaSustancia (Elemento _ simboloQuimico _ _) = simboloQuimico
 formulaDeUnaSustancia (Compuesto _ componentes _) = "(" ++ concatMap construirFormulaDeComponenteDeUnaSustanciaCompuesta componentes ++ ")"  --No necesitas agregar un show acá pq la otra función ya convierte todos los ints
 
 --Extras
+-- Las funciones extras son funciones que se crearon sin pensar en un problema en particular, pero que se consideraron que podían ser útiles. Estas sólo fueron utilizadas para resolver el punto 5)
 
 obtenerNombreSustancia :: Sustancia -> String
 obtenerNombreSustancia (Compuesto nombre lista grupo) = nombre
