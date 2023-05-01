@@ -162,8 +162,6 @@ combinarNombreDeUnionConOtroNombre :: String -> String -> String
 combinarNombreDeUnionConOtroNombre nombreDelPrimerElemento nombreDelSegundoElemento = (formarNombreDeUnionDeUnNombre nombreDelPrimerElemento) ++ " de " ++ nombreDelSegundoElemento
 
 --5)
-{-mezclarComponentes :: [Componente] -> Sustancia
-mezclarComponentes componentes = Compuesto  componentes NoMetal-}
 
 mezclarComponentes :: [Componente] -> Sustancia
 mezclarComponentes componentes = Compuesto ((formarNombreDeLaMezclaDeComponente . map (obtenerNombreSustancia . obtenerSustanciaDeComponente)) componentes) componentes NoMetal
@@ -175,7 +173,7 @@ formarNombreDeLaMezclaDeComponente componentes | length componentes == 1 = head 
 --6)
 
 concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto :: [Componente] -> String
-concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto = ((++)"(" . flip (++)")". concat . (map construirFormulaDeComponenteDeUnaSustanciaCompuesta)) -- Poca expresividad
+concatenacionDeLasFormulasDeLosComponentesDeUnCompuesto = ((++)"(" . flip (++)")". concat . (map construirFormulaDeComponenteDeUnaSustanciaCompuesta)) -- Poca expresividad (Por eso no se la usa)
 
 construirFormulaDeComponenteDeUnaSustanciaCompuesta :: Componente -> String
 construirFormulaDeComponenteDeUnaSustanciaCompuesta (Componente sustancia 1) = formulaDeUnaSustancia sustancia
